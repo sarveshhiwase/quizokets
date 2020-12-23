@@ -1,6 +1,6 @@
 const users = [];
 
-const addUser = ({ id, username, room }) => {
+const addUser = ({ id, username, room, score }) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -19,7 +19,7 @@ const addUser = ({ id, username, room }) => {
     };
   }
 
-  const user = { id, username, room };
+  const user = { id, username, room, score };
   users.push(user);
   return { user };
 };
@@ -36,6 +36,12 @@ const getUser = (id) => {
   return user;
 };
 
+const updateUser = (id, score) => {
+  const userIndex = users.findIndex((user) => user.id === id);
+  users[userIndex].score = score;
+  return users[userIndex];
+};
+
 const getUsersinRoom = (room) => {
   return users.filter((user) => user.room === room);
 };
@@ -46,6 +52,7 @@ const privelgedUser = (room) => {
 
 module.exports = {
   getUser,
+  updateUser,
   getUsersinRoom,
   addUser,
   removeUser,

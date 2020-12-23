@@ -9,6 +9,7 @@ const {
 } = require("./utils/messages");
 const {
   getUser,
+  updateUser,
   getUsersinRoom,
   removeUser,
   addUser,
@@ -34,7 +35,12 @@ io.on("connection", (socket) => {
   //   socket.broadcast.emit("message", generateMessage("A new user has joined!"));
 
   socket.on("join", ({ username, room }, callback) => {
-    const { error, user } = addUser({ id: socket.id, username, room });
+    const { error, user } = addUser({
+      id: socket.id,
+      username,
+      room,
+      score: 0,
+    });
     if (error) {
       return callback(error);
     }
@@ -92,6 +98,14 @@ io.on("connection", (socket) => {
   socket.on("indexhaschanged", (ind) => {
     const user = getUser(socket.id);
     io.to(user.room).emit("nextquestion", ind);
+  });
+
+  socket.on("scorehaschanged", (score) => {
+    const user = updateUser(socket.id, score);
+    io.to(user.room).emit("roomInfo", {
+      room: user.room,
+      users: getUsersinRoom(user.room),
+    });
   });
 
   socket.on("buzzer", () => {

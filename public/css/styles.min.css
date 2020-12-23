@@ -67,9 +67,11 @@ button:disabled {
 }
 .chat {
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 .chat__sidebar {
-  height: 100vh;
+  height: 80vh;
   color: #fff;
   background: #333744;
   width: 225px;
@@ -79,7 +81,7 @@ button:disabled {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  max-height: 100vh;
+  height: 80vh;
 }
 .chat__messages {
   flex-grow: 1;
@@ -172,4 +174,66 @@ button:disabled {
 
 .listname {
   margin-left: 20px;
+}
+
+.quiz-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
+  overflow: hidden;
+  width: 600px;
+  max-width: 100%;
+}
+
+.grayLoad {
+  border-radius: 10px;
+  background-color: gainsboro;
+}
+.color {
+  color: gainsboro;
+}
+
+.quiz-header {
+  padding: 2rem 2rem 1rem;
+}
+
+#question {
+  padding: 1rem;
+  text-align: center;
+  margin: 0;
+}
+
+.answerlist {
+  list-style-type: none;
+  padding: 0;
+}
+
+.answerlist li {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.answerlist li label {
+  cursor: pointer;
+}
+
+#sumbit {
+  background-color: #8e44ad;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: 1.1rem;
+  width: 100% !important;
+  padding: 1.3rem;
+}
+
+#submit:hover {
+  background-color: #732d91;
+}
+
+#submit:focus {
+  background-color: #5e3370;
+  outline: none;
 }

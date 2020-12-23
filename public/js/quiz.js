@@ -86,6 +86,8 @@ submitBtn.addEventListener("click", () => {
 
     //socket.emit("stopcount");
     socket.emit("indexhaschanged", currentQuiz);
+
+    socket.emit("scorehaschanged", score);
   }
 });
 
