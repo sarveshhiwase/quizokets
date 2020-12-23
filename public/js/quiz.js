@@ -6,6 +6,7 @@ const b_text = document.getElementById("b_text");
 const c_text = document.getElementById("c_text");
 const d_text = document.getElementById("d_text");
 const submitBtn = document.getElementById("submitans");
+
 submitBtn.setAttribute("disabled", "disabled");
 const buzzerBtn = document.getElementById("buzzer");
 let currentQuiz = 0;
@@ -13,13 +14,13 @@ let score = 0;
 //Questions for quiz
 let quizData = [];
 let x;
-let timerCount = 10;
+let timesetUser = 0;
 
 questionEl.classList.add("grayLoad");
 answerEls.forEach((answerEl) => {
   answerEl.nextElementSibling.classList.add("grayLoad", "color");
 });
-socket.on("gamestarted", (questions) => {
+socket.on("gamestarted", (questions, tlimit) => {
   console.log(questions);
   quizData = questions;
   renderLogic();
@@ -27,10 +28,11 @@ socket.on("gamestarted", (questions) => {
   answerEls.forEach((answerEl) => {
     answerEl.nextElementSibling.classList.remove("grayLoad", "color");
   });
-  loadQuiz();
+  timesetUser = parseInt(tlimit);
+  loadQuiz(timesetUser);
 });
 
-function loadQuiz() {
+function loadQuiz(tlimit) {
   deselectAnswers();
 
   const currentQuizData = quizData[currentQuiz];
@@ -51,7 +53,7 @@ function loadQuiz() {
     elArray[i].innerHTML = optionsArray[randomNumber];
     optionsArray.splice(randomNumber, 1);
   }
-  timer(timerCount);
+  timer(tlimit);
 }
 
 function getSelected() {
@@ -79,6 +81,9 @@ submitBtn.addEventListener("click", () => {
   if (answer) {
     if (answer === quizData[currentQuiz].correct) {
       score++;
+      socket.emit("correctanswer", quizData[currentQuiz].correct);
+    } else {
+      socket.emit("wronganswer", quizData[currentQuiz].correct);
     }
 
     currentQuiz++;
@@ -100,7 +105,7 @@ buzzerBtn.addEventListener("click", (e) => {
 
 socket.on("buzzerPressed", () => {
   clearInterval(x);
-  timer(timerCount);
+  timer(timesetUser);
   disable();
 });
 
@@ -114,7 +119,7 @@ socket.on("nextquestion", (ind) => {
   currentQuiz = ind;
   enable();
   if (currentQuiz < quizData.length) {
-    loadQuiz();
+    loadQuiz(timesetUser);
   } else {
     clearInterval(x);
     const timerEL = document.getElementById("timer");

@@ -17,11 +17,9 @@ const getQuestions = require("./utils/quizgen");
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const cl = console.log;
 
 const port = process.env.PORT || 3000;
 const publicDirectoryPath = path.join(__dirname, "../public");
-cl(publicDirectoryPath);
 
 app.use(express.static(publicDirectoryPath));
 
@@ -86,10 +84,10 @@ io.on("connection", (socket) => {
   //   callback();
   // });
 
-  socket.on("quizstart", async () => {
+  socket.on("quizstart", async (limit, timelimit, categoryValue) => {
     const user = getUser(socket.id);
-    const questions = await getQuestions();
-    io.to(user.room).emit("gamestarted", questions);
+    const questions = await getQuestions(limit, categoryValue);
+    io.to(user.room).emit("gamestarted", questions, timelimit);
   });
 
   socket.on("indexhaschanged", (ind) => {
@@ -107,8 +105,35 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("correctanswer", (answer) => {
+    const user = getUser(socket.id);
+    io.to(user.room).emit(
+      "message",
+      generateMessage(
+        "Admin",
+        `${user.username} has answered correctly and answer was ${answer}`
+      )
+    );
+  });
+  socket.on("wronganswer", (answer) => {
+    const user = getUser(socket.id);
+    io.to(user.room).emit(
+      "message",
+      generateMessage(
+        "Admin",
+        `${user.username} has answered incorrectly and answer was ${answer}`
+      )
+    );
+  });
+
   socket.on("buzzer", () => {
     const user = getUser(socket.id);
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        "message",
+        generateMessage("Admin", `${user.username} has pressed the buzzer!`)
+      );
     io.to(user.room).emit("buzzerPressed");
     io.to(user.id).emit("buzzerEnable");
   });

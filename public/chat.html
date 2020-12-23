@@ -9,6 +9,71 @@
     <div id="lobby" class="centered-form">
       <div class="centered-form__box">
         <div class="lobbylist"></div>
+        <div id="QueDiv" hidden>
+          <label for="limit">Choose Question Limit</label>
+          <select name="limit" id="limit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+        <div id="TimeDiv" hidden>
+          <label for="timelimit">Choose Time Limit</label>
+          <select name="timelimit" id="timelimit">
+            <option value="5">5 secs</option>
+            <option value="10">10 secs</option>
+            <option value="15">15 secs</option>
+            <option value="20">20 secs</option>
+          </select>
+        </div>
+        <div id="categoryDiv" hidden>
+          <label for="category">Choose Category</label>
+          <select name="trivia_category" class="form-control" id="category">
+            <option value="any">Any Category</option>
+            <option value="9">General Knowledge</option>
+            <option value="10">Entertainment: Books</option>
+            <option value="11">Entertainment: Film</option>
+            <option value="12">Entertainment: Music</option>
+            <option value="13">Entertainment: Musicals &amp; Theatres</option>
+            <option value="14">Entertainment: Television</option>
+            <option value="15">Entertainment: Video Games</option>
+            <option value="16">Entertainment: Board Games</option>
+            <option value="17">Science &amp; Nature</option>
+            <option value="18">Science: Computers</option>
+            <option value="19">Science: Mathematics</option>
+            <option value="20">Mythology</option>
+            <option value="21">Sports</option>
+            <option value="22">Geography</option>
+            <option value="23">History</option>
+            <option value="24">Politics</option>
+            <option value="25">Art</option>
+            <option value="26">Celebrities</option>
+            <option value="27">Animals</option>
+            <option value="28">Vehicles</option>
+            <option value="29">Entertainment: Comics</option>
+            <option value="30">Science: Gadgets</option>
+            <option value="31">
+              Entertainment: Japanese Anime &amp; Manga
+            </option>
+            <option value="32">Entertainment: Cartoon &amp; Animations</option>
+          </select>
+        </div>
+
+        <div id="PlayersDiv" hidden>
+          <label for="palyersimit">Choose player Limit</label>
+          <select name="playerslimit" id="playerslimit">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </div>
+
+        <!-- <input type="number" hidden id="limit" /> -->
         <button id="start" class="sendmsg" disabled>Start</button>
       </div>
     </div>

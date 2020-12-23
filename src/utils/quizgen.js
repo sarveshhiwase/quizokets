@@ -1,8 +1,16 @@
 const axios = require("axios");
 
-const getQuestions = async () => {
+const getQuestions = async (limit, categoryValue) => {
+  console.log(categoryValue);
+  if (categoryValue !== "any") {
+    categoryValue = `&category=${categoryValue}`;
+  } else {
+    categoryValue = "";
+  }
+
   let quizQuestions = [];
-  const apiUrl = `https://opentdb.com/api.php?amount=4&difficulty=easy&type=multiple`;
+  const apiUrl = `https://opentdb.com/api.php?amount=${limit}&difficulty=easy&type=multiple${categoryValue}`;
+  console.log(apiUrl);
   const jsondata = await axios(apiUrl);
   const array = jsondata.data.results;
 

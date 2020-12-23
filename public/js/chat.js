@@ -138,10 +138,19 @@ socket.emit("join", { username, room }, (error) => {
  */
 socket.on("start-game", () => {
   startbtn.removeAttribute("disabled");
+  document.getElementById("QueDiv").removeAttribute("hidden");
+  document.getElementById("TimeDiv").removeAttribute("hidden");
+  document.getElementById("categoryDiv").removeAttribute("hidden");
 });
 
 startbtn.addEventListener("click", () => {
-  socket.emit("quizstart");
+  const questionlimit = document.getElementById("limit");
+  const timelimit = document.getElementById("timelimit");
+  const category = document.getElementById("category");
+  const categoryValue = category.options[category.selectedIndex].value;
+  const value = questionlimit.options[questionlimit.selectedIndex].value;
+  const timerCount = parseInt(timelimit.options[timelimit.selectedIndex].value);
+  socket.emit("quizstart", value, timerCount, categoryValue);
 });
 
 function renderLogic() {
