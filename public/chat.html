@@ -9,7 +9,7 @@
     <div id="lobby" class="centered-form">
       <div class="centered-form__box">
         <div class="lobbylist"></div>
-        <button id="start" disabled>Start</button>
+        <button id="start" class="sendmsg" disabled>Start</button>
       </div>
     </div>
     <div id="main-game" style="display: none">
@@ -38,37 +38,43 @@
 
         <button id="submit">Submit</button>
       </div> -->
-      <h2 id="timer"></h2>
-      <button id="buzzer">PRESS ME</button>
+
+      <!-- <button id="buzzer">PRESS ME</button> -->
       <div class="chat">
         <div id="sidebar" class="chat__sidebar"></div>
+        <div class="buzzerparent">
+          <div class="quiz-container" id="quiz">
+            <div class="quiz-header">
+              <h2 id="question"></h2>
+              <ul class="answerlist">
+                <li>
+                  <input type="radio" id="a" name="answer" class="answer" />
+                  <label id="a_text" for="a">Multiple Choice Answers</label>
+                </li>
+                <li>
+                  <input type="radio" id="b" name="answer" class="answer" />
+                  <label id="b_text" for="b">Multiple Choice Answers</label>
+                </li>
+                <li>
+                  <input type="radio" id="c" name="answer" class="answer" />
+                  <label id="c_text" for="c">Multiple Choice Answers</label>
+                </li>
+                <li>
+                  <input type="radio" id="d" name="answer" class="answer" />
+                  <label id="d_text" for="d">Multiple Choice Answers</label>
+                </li>
+              </ul>
+            </div>
 
-        <div class="quiz-container" id="quiz">
-          <div class="quiz-header">
-            <h2 id="question"></h2>
-            <ul class="answerlist">
-              <li>
-                <input type="radio" id="a" name="answer" class="answer" />
-                <label id="a_text" for="a">Multiple Choice Answers</label>
-              </li>
-              <li>
-                <input type="radio" id="b" name="answer" class="answer" />
-                <label id="b_text" for="b">Multiple Choice Answers</label>
-              </li>
-              <li>
-                <input type="radio" id="c" name="answer" class="answer" />
-                <label id="c_text" for="c">Multiple Choice Answers</label>
-              </li>
-              <li>
-                <input type="radio" id="d" name="answer" class="answer" />
-                <label id="d_text" for="d">Multiple Choice Answers</label>
-              </li>
-            </ul>
+            <button class="answerbtn" id="submitans">Submit</button>
           </div>
-
-          <button id="submit">Submit</button>
+          <!-- <a class="button" id="buzzer" href="#">Press me!</a> -->
+          <div class="flex-center">
+            <button id="buzzer" style="margin-top: 50px" class="btn b-2">
+              Buzzer
+            </button>
+          </div>
         </div>
-
         <div class="chat__main">
           <div id="messages" class="chat__messages"></div>
 
@@ -80,9 +86,9 @@
                 required
                 autocomplete="off"
               />
-              <button>Send</button>
+              <button class="sendmsg">Send</button>
             </form>
-            <button id="send-location">Send location</button>
+            <!-- <button id="send-location">Send location</button> -->
           </div>
         </div>
       </div>
@@ -108,7 +114,8 @@
     </script>
 
     <script id="sidebar-template" type="text/html">
-      <h2 class="room-title">{{room}}</h2>
+      <h2 class="room-title">{{room}} <span id="timer">10s</span></h2>
+
       <h3 class="list-title">Users</h3>
       <ul class="users">
         {{#users}}

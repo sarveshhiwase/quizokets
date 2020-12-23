@@ -3,10 +3,7 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const Filter = require("bad-words");
-const {
-  generateMessage,
-  generateLocationMessage,
-} = require("./utils/messages");
+const { generateMessage } = require("./utils/messages");
 const {
   getUser,
   updateUser,
@@ -77,17 +74,17 @@ io.on("connection", (socket) => {
     callback();
   });
 
-  socket.on("sendLocation", (coords, callback) => {
-    const user = getUser(socket.id);
-    io.to(user.room).emit(
-      "locationMessage",
-      generateLocationMessage(
-        user.username,
-        `https://google.com/maps?q=${coords.latitude},${coords.longitude}`
-      )
-    );
-    callback();
-  });
+  // socket.on("sendLocation", (coords, callback) => {
+  //   const user = getUser(socket.id);
+  //   io.to(user.room).emit(
+  //     "locationMessage",
+  //     generateLocationMessage(
+  //       user.username,
+  //       `https://google.com/maps?q=${coords.latitude},${coords.longitude}`
+  //     )
+  //   );
+  //   callback();
+  // });
 
   socket.on("quizstart", async () => {
     const user = getUser(socket.id);
@@ -97,7 +94,9 @@ io.on("connection", (socket) => {
 
   socket.on("indexhaschanged", (ind) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("nextquestion", ind);
+    if (user) {
+      io.to(user.room).emit("nextquestion", ind);
+    }
   });
 
   socket.on("scorehaschanged", (score) => {

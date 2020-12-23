@@ -5,7 +5,8 @@ const a_text = document.getElementById("a_text");
 const b_text = document.getElementById("b_text");
 const c_text = document.getElementById("c_text");
 const d_text = document.getElementById("d_text");
-const submitBtn = document.getElementById("submit");
+const submitBtn = document.getElementById("submitans");
+submitBtn.setAttribute("disabled", "disabled");
 const buzzerBtn = document.getElementById("buzzer");
 let currentQuiz = 0;
 let score = 0;
@@ -13,8 +14,6 @@ let score = 0;
 let quizData = [];
 let x;
 let timerCount = 10;
-
-const timerEl = document.getElementById("timer");
 
 questionEl.classList.add("grayLoad");
 answerEls.forEach((answerEl) => {
@@ -91,7 +90,11 @@ submitBtn.addEventListener("click", () => {
   }
 });
 
-buzzerBtn.addEventListener("click", () => {
+buzzerBtn.addEventListener("click", (e) => {
+  var bleep = new Audio();
+  bleep.src = "https://www.soundjay.com/button/sounds/beep-10.mp3";
+  bleep.play();
+
   socket.emit("buzzer");
 });
 
@@ -102,7 +105,8 @@ socket.on("buzzerPressed", () => {
 });
 
 socket.on("buzzerEnable", () => {
-  enable();
+  // enable();
+  submitBtn.removeAttribute("disabled");
 });
 
 socket.on("nextquestion", (ind) => {
@@ -112,12 +116,15 @@ socket.on("nextquestion", (ind) => {
   if (currentQuiz < quizData.length) {
     loadQuiz();
   } else {
+    clearInterval(x);
+    const timerEL = document.getElementById("timer");
+    timerEL.innerHTML = "Expired";
+    buzzerBtn.style.display = "none";
     quiz.innerHTML = `
               <h2>You answered correctly at ${score}/${quizData.length} questions.</h2>
               
-              <button onclick="location.reload()">Reload</button>
+              <button class="answerbtn" onclick="location.reload()">Reload</button>
           `;
-    timerEl.innerHTML = "";
   }
 });
 
@@ -126,12 +133,12 @@ function timer(time) {
     time -= 1;
 
     // Display the result in the element with id="timer"
-    timerEl.innerHTML = time + "s ";
+    document.getElementById("timer").innerHTML = time + "s ";
 
     // If the count down is finished, write some text
     if (time <= 0) {
       clearInterval(x);
-      timerEl.innerHTML = "EXPIRED";
+      document.getElementById("timer").innerHTML = "EXPIRED";
       currentQuiz++;
       socket.emit("indexhaschanged", currentQuiz);
     }
@@ -140,7 +147,8 @@ function timer(time) {
 
 function enable() {
   buzzerBtn.removeAttribute("disabled");
-  submitBtn.removeAttribute("disabled");
+  // submitBtn.removeAttribute("disabled");
+  submitBtn.setAttribute("disabled", "disabled");
 }
 function disable() {
   buzzerBtn.setAttribute("disabled", "disabled");
