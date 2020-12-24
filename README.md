@@ -6,6 +6,5 @@ Changes To Be Made
 -time span = done
 -max question = done
 -topic =done
--player limit - 7
--custom question
--avatar
+-player limit - 7 = done
+-avatar = done

@@ -36,6 +36,7 @@ io.on("connection", (socket) => {
       room,
       score: 0,
     });
+
     if (error) {
       return callback(error);
     }
