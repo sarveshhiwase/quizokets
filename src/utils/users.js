@@ -10,7 +10,7 @@ const addUser = ({ id, username, room, score }) => {
     };
   }
 
-  if (getUsersinRoom(room).length >= 2) {
+  if (getUsersinRoom(room).length >= 6) {
     return {
       error: "Max Limit reached of 7 Players",
     };
