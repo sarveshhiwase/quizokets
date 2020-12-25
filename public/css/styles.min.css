@@ -138,7 +138,9 @@ option {
     height: auto;
     overflow: none;
   }
-
+  .centered-form__box {
+    padding: 10px;
+  }
   .chat__sidebar {
     width: 100%;
     height: auto;
