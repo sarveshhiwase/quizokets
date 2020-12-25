@@ -112,7 +112,7 @@ io.on("connection", (socket) => {
     const user = getUser(socket.id);
     io.to(user.room).emit("correctlobby", user.username);
     io.to(user.room).emit(
-      "message",
+      "answermessage",
       generateMessage("Admin", `Correct answer :  ${answer}`)
     );
   });
@@ -120,19 +120,13 @@ io.on("connection", (socket) => {
     const user = getUser(socket.id);
     io.to(user.room).emit("incorrectlobby", user.username);
     io.to(user.room).emit(
-      "message",
+      "answermessage",
       generateMessage("Admin", `Correct answer :  ${answer}`)
     );
   });
 
   socket.on("buzzer", () => {
     const user = getUser(socket.id);
-    // socket.broadcast
-    //   .to(user.room)
-    //   .emit(
-    //     "message",
-    //     generateMessage("Admin", `${user.username} has pressed the buzzer!`)
-    //   );
     io.to(user.room).emit("buzzerPressed", user.username);
     io.to(user.id).emit("buzzerEnable");
   });

@@ -10,7 +10,7 @@ const addUser = ({ id, username, room, score, avatar }) => {
     };
   }
 
-  if (getUsersinRoom(room).length >= 6) {
+  if (getUsersinRoom(room).length > 6) {
     return {
       error: "Max Limit reached of 7 Players",
     };
@@ -80,30 +80,20 @@ const getAvatar = (room) => {
     "011-death.svg",
   ];
   let randNo = Math.floor(Math.random() * imageArr.length);
-  let imagearr = [];
   const users = getUsersinRoom(room);
 
   if (users.length === 0) {
     return imageArr[randNo];
   }
-  const avatars = [];
   users.forEach((ele) => {
     if (imageArr.includes(ele.avatar)) {
-      console.log(ele.avatar);
       const avatarIndex = imageArr.findIndex((el) => el === ele.avatar);
-      avatars.push(avatarIndex);
+      imageArr.splice(avatarIndex, 1);
     }
   });
-  console.log(avatars);
-  for (i = 0; i < avatars.length; i++) {
-    imageArr.splice(avatars[i], 1);
-    imagearr = imageArr;
-    console.log(imagearr);
-  }
 
-  randNo = Math.floor(Math.random() * imagearr.length);
-
-  return imagearr[randNo];
+  randNo = Math.floor(Math.random() * imageArr.length);
+  return imageArr[randNo];
 };
 
 module.exports = {

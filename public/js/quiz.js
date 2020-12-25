@@ -179,13 +179,12 @@ function disable() {
 }
 
 function timeFormat(time) {
-  let strtime = time;
   if (time < 10) {
-    strtime = "0" + time;
-    return strtime;
+    time = "0" + time;
+    return time;
   }
-  strtime = time;
-  return strtime;
+
+  return time;
 }
 
 function markup(username) {

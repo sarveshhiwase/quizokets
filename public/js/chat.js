@@ -10,6 +10,8 @@ const $messages = document.querySelector("#messages");
 // Templates
 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const correctAnswerTemplate = document.querySelector("#correct-answer-template")
+  .innerHTML;
 const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 const lobbyTemplate = document.querySelector("#lobby-template").innerHTML;
 const lobbyDiv = document.getElementById("lobby");
@@ -50,6 +52,15 @@ socket.on("message", (message) => {
   $messages.insertAdjacentHTML("beforeend", html);
   autoscroll();
 });
+socket.on("answermessage", (message) => {
+  const html = Mustache.render(correctAnswerTemplate, {
+    username: message.username,
+    message: message.text,
+    createdAt: moment(message.createdAt).format("h:mm a"),
+  });
+  $messages.insertAdjacentHTML("beforeend", html);
+  autoscroll();
+});
 
 socket.on("roomInfo", ({ room, users }) => {
   const html = Mustache.render(sidebarTemplate, {
@@ -65,10 +76,6 @@ socket.on("roomInfo", ({ room, users }) => {
   });
   document.querySelector(".lobbylist").innerHTML = html;
 });
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 $messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
