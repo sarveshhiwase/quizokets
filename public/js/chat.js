@@ -10,9 +10,6 @@ const $messages = document.querySelector("#messages");
 // Templates
 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
-// const locationMessageTemplate = document.querySelector(
-//   "#location-message-template"
-// ).innerHTML;
 const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 const lobbyTemplate = document.querySelector("#lobby-template").innerHTML;
 const lobbyDiv = document.getElementById("lobby");
@@ -45,7 +42,6 @@ const autoscroll = () => {
 };
 
 socket.on("message", (message) => {
-  console.log(message);
   const html = Mustache.render(messageTemplate, {
     username: message.username,
     message: message.text,
@@ -54,17 +50,6 @@ socket.on("message", (message) => {
   $messages.insertAdjacentHTML("beforeend", html);
   autoscroll();
 });
-
-// socket.on("locationMessage", (message) => {
-//   console.log(message);
-//   const html = Mustache.render(locationMessageTemplate, {
-//     username: message.username,
-//     url: message.url,
-//     createdAt: moment(message.createdAt).format("h:mm a"),
-//   });
-//   $messages.insertAdjacentHTML("beforeend", html);
-//   autoscroll();
-// });
 
 socket.on("roomInfo", ({ room, users }) => {
   const html = Mustache.render(sidebarTemplate, {
@@ -104,28 +89,6 @@ $messageForm.addEventListener("submit", (e) => {
     console.log("Message delivered!");
   });
 });
-
-// $sendLocationButton.addEventListener("click", () => {
-//   if (!navigator.geolocation) {
-//     return alert("Geolocation is not supported by your browser.");
-//   }
-
-//   $sendLocationButton.setAttribute("disabled", "disabled");
-
-//   navigator.geolocation.getCurrentPosition((position) => {
-//     socket.emit(
-//       "sendLocation",
-//       {
-//         latitude: position.coords.latitude,
-//         longitude: position.coords.longitude,
-//       },
-//       () => {
-//         $sendLocationButton.removeAttribute("disabled");
-//         console.log("Location shared!");
-//       }
-//     );
-//   });
-// });
 
 socket.emit("join", { username, room }, (error) => {
   if (error) {

@@ -21,7 +21,6 @@ answerEls.forEach((answerEl) => {
   answerEl.nextElementSibling.classList.add("grayLoad", "color");
 });
 socket.on("gamestarted", (questions, tlimit) => {
-  console.log(questions);
   quizData = questions;
   renderLogic();
   questionEl.classList.remove("grayLoad");
@@ -83,16 +82,29 @@ submitBtn.addEventListener("click", () => {
       score++;
       socket.emit("correctanswer", quizData[currentQuiz].correct);
     } else {
-      socket.emit("wronganswer", quizData[currentQuiz].correct);
+      socket.emit("incorrectanswer", quizData[currentQuiz].correct);
     }
 
     currentQuiz++;
 
     //socket.emit("stopcount");
     socket.emit("indexhaschanged", currentQuiz);
-
-    socket.emit("scorehaschanged", score);
   }
+});
+
+socket.on("correctlobby", (name) => {
+  document.querySelector("." + name + "-check").style.display = "block";
+  setTimeout(() => {
+    document.querySelector("." + name + "-check").style.display = "none";
+    socket.emit("scorehaschanged", score);
+  }, 1000);
+});
+socket.on("incorrectlobby", (name) => {
+  document.querySelector("." + name + "-uncheck").style.display = "block";
+  setTimeout(() => {
+    document.querySelector("." + name + "-uncheck").style.display = "none";
+    socket.emit("scorehaschanged", score);
+  }, 1000);
 });
 
 buzzerBtn.addEventListener("click", (e) => {
@@ -103,10 +115,14 @@ buzzerBtn.addEventListener("click", (e) => {
   socket.emit("buzzer");
 });
 
-socket.on("buzzerPressed", () => {
-  clearInterval(x);
-  timer(timesetUser);
+socket.on("buzzerPressed", (name) => {
+  // clearInterval(x);
+  // timer(timesetUser);
   disable();
+  document.querySelector("." + name + "-buzzer").style.display = "block";
+  setTimeout(() => {
+    document.querySelector("." + name + "-buzzer").style.display = "none";
+  }, 1000);
 });
 
 socket.on("buzzerEnable", () => {
@@ -123,7 +139,7 @@ socket.on("nextquestion", (ind) => {
   } else {
     clearInterval(x);
     const timerEL = document.getElementById("timer");
-    timerEL.innerHTML = "Expired";
+    timerEL.innerHTML = "";
     buzzerBtn.style.display = "none";
     quiz.innerHTML = `
               <h2>You answered correctly at ${score}/${quizData.length} questions.</h2>
@@ -138,12 +154,12 @@ function timer(time) {
     time -= 1;
 
     // Display the result in the element with id="timer"
-    document.getElementById("timer").innerHTML = time + "s ";
+    document.getElementById("timer").innerHTML = "00:" + timeFormat(time);
 
     // If the count down is finished, write some text
     if (time <= 0) {
       clearInterval(x);
-      document.getElementById("timer").innerHTML = "EXPIRED";
+      document.getElementById("timer").innerHTML = "";
       currentQuiz++;
       socket.emit("indexhaschanged", currentQuiz);
     }
@@ -158,4 +174,14 @@ function enable() {
 function disable() {
   buzzerBtn.setAttribute("disabled", "disabled");
   submitBtn.setAttribute("disabled", "disabled");
+}
+
+function timeFormat(time) {
+  let strtime = time;
+  if (time < 10) {
+    strtime = "0" + time;
+    return strtime;
+  }
+  strtime = time;
+  return strtime;
 }

@@ -4,6 +4,11 @@
     <title>Chat App</title>
     <link rel="icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/styles.min.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
   </head>
   <body>
     <div id="lobby" class="centered-form">
@@ -139,18 +144,8 @@
       </div>
     </script>
 
-    <script id="location-message-template" type="text/html">
-      <div class="message">
-        <p>
-          <span class="message__name">{{username}}</span>
-          <span class="message__meta">{{createdAt}}</span>
-        </p>
-        <p><a href="{{url}}" target="_blank">My current location</a></p>
-      </div>
-    </script>
-
     <script id="sidebar-template" type="text/html">
-      <h2 class="room-title">{{room}} <span id="timer">10s</span></h2>
+      <h2 class="room-title">{{room}} <span id="timer"></span></h2>
 
       <h3 class="list-title">Users</h3>
       <ul class="users">
@@ -164,7 +159,29 @@
             alt="profile-pic"
             srcset=""
           />
-          <span class="listname"> {{username}} - {{score}} </span>
+          <span class="listname flex">
+            {{username}} - {{score}}
+            <a
+              style="display: none;"
+              href="#"
+              class="ml-2 {{username}}-buzzer hvr-buzz"
+            >
+              <i
+                class="fas fa-bullhorn fa-2x"
+                style="color: rgb(202, 46, 54)"
+              ></i>
+            </a>
+            <a style="display: none;" href="#" class="ml-2 {{username}}-check">
+              <i class="fas fa-check fa-2x" style="color: green"></i>
+            </a>
+            <a
+              style="display: none;"
+              href="#"
+              class="ml-2 {{username}}-uncheck"
+            >
+              <i class="fas fa-times fa-2x" style="color: red"></i>
+            </a>
+          </span>
         </li>
         {{/users}}
       </ul>

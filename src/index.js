@@ -96,12 +96,13 @@ io.on("connection", (socket) => {
     const user = updateUser(socket.id, score);
     io.to(user.room).emit("roomInfo", {
       room: user.room,
-      users: getUsersinRoom(user.room),
+      users: getUsersinRoom(user.room).sort((a, b) => b.score - a.score),
     });
   });
 
   socket.on("correctanswer", (answer) => {
     const user = getUser(socket.id);
+    io.to(user.room).emit("correctlobby", user.username);
     io.to(user.room).emit(
       "message",
       generateMessage(
@@ -110,8 +111,9 @@ io.on("connection", (socket) => {
       )
     );
   });
-  socket.on("wronganswer", (answer) => {
+  socket.on("incorrectanswer", (answer) => {
     const user = getUser(socket.id);
+    io.to(user.room).emit("incorrectlobby", user.username);
     io.to(user.room).emit(
       "message",
       generateMessage(
@@ -129,7 +131,7 @@ io.on("connection", (socket) => {
         "message",
         generateMessage("Admin", `${user.username} has pressed the buzzer!`)
       );
-    io.to(user.room).emit("buzzerPressed");
+    io.to(user.room).emit("buzzerPressed", user.username);
     io.to(user.id).emit("buzzerEnable");
   });
 
