@@ -96,7 +96,6 @@ const getAvatar = (room) => {
   });
   console.log(avatars);
   for (i = 0; i < avatars.length; i++) {
-    imgarray = imageArr;
     imageArr.splice(avatars[i], 1);
     imagearr = imageArr;
     console.log(imagearr);
