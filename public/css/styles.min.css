@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 html {
   font-size: 16px;
@@ -68,8 +70,10 @@ input {
   }
 }
 .centered-form__box {
-  box-shadow: 0 0 17px 1px #1d1f26;
-  background: #f7f7fa;
+  /* box-shadow: 0 0 17px 1px #1d1f26; */
+  border-radius: 10px;
+  opacity: 0.9;
+  background: white;
   padding: 24px;
   width: auto;
 }
@@ -79,6 +83,7 @@ input {
 .centered-form input {
   margin-bottom: 16px;
   width: 100%;
+  background-color: gainsboro;
 }
 .chat {
   display: flex;
@@ -91,6 +96,25 @@ input {
   background: #333744;
   width: 300px;
   overflow-y: scroll;
+}
+#limit,
+#timelimit,
+#category {
+  width: 100%;
+  background-color: gainsboro;
+  font-size: 16px;
+  border: none;
+  color: #4285f4;
+  outline: none;
+}
+
+#category {
+  margin-bottom: 10px;
+}
+option {
+  background-color: gainsboro;
+  border: none;
+  color: #0070cc;
 }
 .chat__main {
   flex-grow: 1;
