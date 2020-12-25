@@ -10,6 +10,7 @@ const {
   removeUser,
   addUser,
   privelgedUser,
+  winner,
 } = require("./utils/users");
 const getQuestions = require("./utils/quizgen");
 
@@ -58,6 +59,11 @@ io.on("connection", (socket) => {
       users: getUsersinRoom(user.room),
     });
     callback();
+  });
+
+  socket.on("winner", () => {
+    const user = getUser(socket.id);
+    io.to(user.room).emit("winnerName", winner(user.room));
   });
 
   socket.on("sendMessage", (message, callback) => {

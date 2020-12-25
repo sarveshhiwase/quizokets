@@ -56,6 +56,18 @@ const privelgedUser = (room) => {
   return users[users.findIndex((user) => user.room === room)];
 };
 
+const winner = (room) => {
+  const DescUsers = getUsersinRoom(room).sort((a, b) => b.score - a.score);
+  const firstUser = DescUsers[0];
+  const duplicatesScores = DescUsers.filter(
+    (el) => el.score === firstUser.score
+  );
+  if (duplicatesScores.length > 1) {
+    return "Tied";
+  }
+  return firstUser.username + " Won!";
+};
+
 module.exports = {
   getUser,
   updateUser,
@@ -63,4 +75,5 @@ module.exports = {
   addUser,
   removeUser,
   privelgedUser,
+  winner,
 };
