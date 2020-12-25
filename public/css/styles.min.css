@@ -140,6 +140,7 @@ option {
   }
   .centered-form__box {
     margin: 10px 0px;
+    width: 90%;
   }
   .chat__sidebar {
     width: 100%;

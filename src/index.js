@@ -11,6 +11,7 @@ const {
   addUser,
   privelgedUser,
   winner,
+  getAvatar,
 } = require("./utils/users");
 const getQuestions = require("./utils/quizgen");
 
@@ -35,6 +36,7 @@ io.on("connection", (socket) => {
       username,
       room,
       score: 0,
+      avatar: getAvatar(room),
     });
 
     if (error) {
@@ -111,10 +113,7 @@ io.on("connection", (socket) => {
     io.to(user.room).emit("correctlobby", user.username);
     io.to(user.room).emit(
       "message",
-      generateMessage(
-        "Admin",
-        `${user.username} has answered correctly and answer was ${answer}`
-      )
+      generateMessage("Admin", `Correct answer :  ${answer}`)
     );
   });
   socket.on("incorrectanswer", (answer) => {
@@ -122,21 +121,18 @@ io.on("connection", (socket) => {
     io.to(user.room).emit("incorrectlobby", user.username);
     io.to(user.room).emit(
       "message",
-      generateMessage(
-        "Admin",
-        `${user.username} has answered incorrectly and answer was ${answer}`
-      )
+      generateMessage("Admin", `Correct answer :  ${answer}`)
     );
   });
 
   socket.on("buzzer", () => {
     const user = getUser(socket.id);
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        generateMessage("Admin", `${user.username} has pressed the buzzer!`)
-      );
+    // socket.broadcast
+    //   .to(user.room)
+    //   .emit(
+    //     "message",
+    //     generateMessage("Admin", `${user.username} has pressed the buzzer!`)
+    //   );
     io.to(user.room).emit("buzzerPressed", user.username);
     io.to(user.id).emit("buzzerEnable");
   });

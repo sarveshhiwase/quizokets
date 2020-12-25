@@ -1,6 +1,6 @@
 const users = [];
 
-const addUser = ({ id, username, room, score }) => {
+const addUser = ({ id, username, room, score, avatar }) => {
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -25,7 +25,7 @@ const addUser = ({ id, username, room, score }) => {
     };
   }
 
-  const user = { id, username, room, score };
+  const user = { id, username, room, score, avatar };
   users.push(user);
   return { user };
 };
@@ -68,6 +68,45 @@ const winner = (room) => {
   return firstUser.username + " Won!";
 };
 
+const getAvatar = (room) => {
+  room = room.toLowerCase();
+  const imageArr = [
+    "001-monster-3.svg",
+    "002-native-1.svg",
+    "003-cupid.svg",
+    "004-werewolf.svg",
+    "005-alien.svg",
+    "010-frankenstein.svg",
+    "011-death.svg",
+  ];
+  let randNo = Math.floor(Math.random() * imageArr.length);
+  let imagearr = [];
+  const users = getUsersinRoom(room);
+
+  if (users.length === 0) {
+    return imageArr[randNo];
+  }
+  const avatars = [];
+  users.forEach((ele) => {
+    if (imageArr.includes(ele.avatar)) {
+      console.log(ele.avatar);
+      const avatarIndex = imageArr.findIndex((el) => el === ele.avatar);
+      avatars.push(avatarIndex);
+    }
+  });
+  console.log(avatars);
+  for (i = 0; i < avatars.length; i++) {
+    imgarray = imageArr;
+    imageArr.splice(avatars[i], 1);
+    imagearr = imageArr;
+    console.log(imagearr);
+  }
+
+  randNo = Math.floor(Math.random() * imagearr.length);
+
+  return imagearr[randNo];
+};
+
 module.exports = {
   getUser,
   updateUser,
@@ -76,4 +115,5 @@ module.exports = {
   removeUser,
   privelgedUser,
   winner,
+  getAvatar,
 };
