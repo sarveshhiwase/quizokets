@@ -126,7 +126,7 @@ option {
   flex-grow: 1;
   padding: 24px 24px 0;
   overflow-y: scroll;
-  max-width: calc(100vw - 1030px);
+  width: calc(100vw - 1030px);
   overflow-wrap: break-word;
 }
 @media screen and (max-width: 768px) {
@@ -144,10 +144,14 @@ option {
     height: auto;
     overflow: none;
   }
-  .quiz-container {
+  .chat__messages {
     width: 100%;
-    overflow: none;
-    height: auto;
+    overflow-y: scroll;
+    max-height: 120px;
+  }
+  .buzzerparent {
+    width: 100%;
+    margin: 20px 0px;
   }
 }
 .message {
