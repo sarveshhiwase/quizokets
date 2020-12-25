@@ -139,7 +139,7 @@ option {
     overflow: none;
   }
   .centered-form__box {
-    padding: 10px;
+    margin: 10px 0px;
   }
   .chat__sidebar {
     width: 100%;
