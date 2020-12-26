@@ -53,9 +53,6 @@ It will start local server on http://localhost:3000
 <h5> <a href="https://github.com/sarveshtheabstractor"> Me </a></h5>
 
 <h5> <a href="https://github.com/mayur-jagtap"> Mayur Jagtap </a></h5>
-<p> Maybe The code isn't that great or modular, but it surely is the best one that we've wrote. </p>
-<p>Huge thanks to this man, we worked quite a lot and we always thought it was
-impossible to create this project, but in the end everything went well.</p>
 
 ## Issues
 
