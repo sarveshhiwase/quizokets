@@ -6,6 +6,7 @@ const $messageFormInput = $messageForm.querySelector("input");
 const $messageFormButton = $messageForm.querySelector("button");
 //const $sendLocationButton = document.querySelector("#send-location");
 const $messages = document.querySelector("#messages");
+const loading = document.getElementById("loading");
 
 // Templates
 
@@ -120,6 +121,7 @@ startbtn.addEventListener("click", () => {
   const categoryValue = category.options[category.selectedIndex].value;
   const value = questionlimit.options[questionlimit.selectedIndex].value;
   const timerCount = parseInt(timelimit.options[timelimit.selectedIndex].value);
+  loading.style.display = "block";
   socket.emit("quizstart", value, timerCount, categoryValue);
 });
 

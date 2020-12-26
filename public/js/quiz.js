@@ -21,6 +21,7 @@ answerEls.forEach((answerEl) => {
   answerEl.nextElementSibling.classList.add("grayLoad", "color");
 });
 socket.on("gamestarted", (questions, tlimit) => {
+  loading.style.display = "none";
   quizData = questions;
   renderLogic();
   questionEl.classList.remove("grayLoad");

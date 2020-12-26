@@ -27,9 +27,6 @@ app.use(express.static(publicDirectoryPath));
 io.on("connection", (socket) => {
   console.log("New WebSocket connection");
 
-  //   socket.emit("message", generateMessage("Welcome!"));
-  //   socket.broadcast.emit("message", generateMessage("A new user has joined!"));
-
   socket.on("join", ({ username, room }, callback) => {
     const { error, user } = addUser({
       id: socket.id,
@@ -43,13 +40,12 @@ io.on("connection", (socket) => {
       return callback(error);
     }
     socket.join(user.room);
-    // Start Game Button Event (lobby)
+
     if (getUsersinRoom(user.room).length > 1) {
       const privuser = privelgedUser(user.room);
       io.to(privuser.id).emit("start-game");
     }
 
-    //socket.emit("message", generateMessage("Admin", "Welcome!"));
     socket.broadcast
       .to(user.room)
       .emit(
@@ -74,18 +70,6 @@ io.on("connection", (socket) => {
     io.to(user.room).emit("message", generateMessage(user.username, message));
     callback();
   });
-
-  // socket.on("sendLocation", (coords, callback) => {
-  //   const user = getUser(socket.id);
-  //   io.to(user.room).emit(
-  //     "locationMessage",
-  //     generateLocationMessage(
-  //       user.username,
-  //       `https://google.com/maps?q=${coords.latitude},${coords.longitude}`
-  //     )
-  //   );
-  //   callback();
-  // });
 
   socket.on("quizstart", async (limit, timelimit, categoryValue) => {
     const user = getUser(socket.id);
@@ -152,8 +136,6 @@ io.on("connection", (socket) => {
       }
     }
   });
-
-  //new event for quiz game
 });
 
 server.listen(port, () => {
