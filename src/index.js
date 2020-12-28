@@ -39,42 +39,49 @@ io.on("connection", (socket) => {
     if (error) {
       return callback(error);
     }
-    socket.join(user.room);
+    if (user) {
+      socket.join(user.room);
 
-    if (getUsersinRoom(user.room).length > 1) {
-      const privuser = privelgedUser(user.room);
-      io.to(privuser.id).emit("start-game");
+      if (getUsersinRoom(user.room).length > 1) {
+        const privuser = privelgedUser(user.room);
+        io.to(privuser.id).emit("start-game");
+      }
+
+      socket.broadcast
+        .to(user.room)
+        .emit(
+          "message",
+          generateMessage("Admin", `${user.username} has joined!`)
+        );
+      io.to(user.room).emit("roomInfo", {
+        room: user.room,
+        users: getUsersinRoom(user.room),
+      });
+      callback();
     }
-
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        generateMessage("Admin", `${user.username} has joined!`)
-      );
-    io.to(user.room).emit("roomInfo", {
-      room: user.room,
-      users: getUsersinRoom(user.room),
-    });
-    callback();
   });
 
   socket.on("winner", () => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("winnerName", winner(user.room));
+    if (user) {
+      io.to(user.room).emit("winnerName", winner(user.room));
+    }
   });
 
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
-
-    io.to(user.room).emit("message", generateMessage(user.username, message));
-    callback();
+    if (user) {
+      io.to(user.room).emit("message", generateMessage(user.username, message));
+      callback();
+    }
   });
 
   socket.on("quizstart", async (limit, timelimit, categoryValue) => {
     const user = getUser(socket.id);
-    const questions = await getQuestions(limit, categoryValue);
-    io.to(user.room).emit("gamestarted", questions, timelimit);
+    if (user) {
+      const questions = await getQuestions(limit, categoryValue);
+      io.to(user.room).emit("gamestarted", questions, timelimit);
+    }
   });
 
   socket.on("indexhaschanged", (ind) => {
@@ -86,33 +93,41 @@ io.on("connection", (socket) => {
 
   socket.on("scorehaschanged", (score) => {
     const user = updateUser(socket.id, score);
-    io.to(user.room).emit("roomInfo", {
-      room: user.room,
-      users: getUsersinRoom(user.room).sort((a, b) => b.score - a.score),
-    });
+    if (user) {
+      io.to(user.room).emit("roomInfo", {
+        room: user.room,
+        users: getUsersinRoom(user.room).sort((a, b) => b.score - a.score),
+      });
+    }
   });
 
   socket.on("correctanswer", (answer) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("correctlobby", user.username);
-    io.to(user.room).emit(
-      "answermessage",
-      generateMessage("Admin", `Correct answer :  ${answer}`)
-    );
+    if (user) {
+      io.to(user.room).emit("correctlobby", user.username);
+      io.to(user.room).emit(
+        "answermessage",
+        generateMessage("Admin", `Correct answer :  ${answer}`)
+      );
+    }
   });
   socket.on("incorrectanswer", (answer) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("incorrectlobby", user.username);
-    io.to(user.room).emit(
-      "answermessage",
-      generateMessage("Admin", `Correct answer :  ${answer}`)
-    );
+    if (user) {
+      io.to(user.room).emit("incorrectlobby", user.username);
+      io.to(user.room).emit(
+        "answermessage",
+        generateMessage("Admin", `Correct answer :  ${answer}`)
+      );
+    }
   });
 
   socket.on("buzzer", () => {
     const user = getUser(socket.id);
-    io.to(user.room).emit("buzzerPressed", user.username);
-    io.to(user.id).emit("buzzerEnable");
+    if (user) {
+      io.to(user.room).emit("buzzerPressed", user.username);
+      io.to(user.id).emit("buzzerEnable");
+    }
   });
 
   socket.on("disconnect", () => {
